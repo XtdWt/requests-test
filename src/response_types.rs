@@ -1,3 +1,4 @@
+#![allow(warnings)]
 use serde::Deserialize;
 
 
@@ -87,7 +88,7 @@ struct GithubLicenseResponse {
 pub struct GithubReposResponse {
     id: i64,
     node_id: String,
-    name: String,
+    pub(crate) name: String,
     full_name: String,
     private: bool,
     owner: GithubOwnerResponse,
@@ -164,4 +165,56 @@ pub struct GithubReposResponse {
     open_issues: i32,
     watchers: i32,
     default_branch: String
+}
+
+
+#[derive(Deserialize, Debug)]
+struct GithubParentCommitResponse {
+    sha: String,
+    url: String,
+    html_url: Option<String>,
+}
+
+
+#[derive(Deserialize, Debug)]
+struct GithubShortUserData {
+    name: Option<String>,
+    email: Option<String>,
+    date: Option<String>,
+}
+
+
+#[derive(Deserialize, Debug)]
+struct GithubVerificationResponse {
+    verified: bool,
+    reason: String,
+    signature: Option<String>,
+    payload: Option<String>,
+    verified_at: Option<String>,
+}
+
+
+#[derive(Deserialize, Debug)]
+struct GithubShortCommitResponse {
+    author: GithubShortUserData,
+    committer: GithubShortUserData,
+    message: String,
+    tree: GithubParentCommitResponse,
+    url: String,
+    comment_count: i32,
+    verification: GithubVerificationResponse,
+}
+
+
+#[derive(Deserialize, Debug)]
+pub struct GithubCommitResponse {
+    sha: String,
+    node_id: String,
+    commit: GithubShortCommitResponse,
+    url: String,
+    html_url: String,
+    comments_url: String,
+    author: Option<GithubOwnerResponse>,
+    committer: Option<GithubOwnerResponse>,
+    parents: Vec<GithubParentCommitResponse>,
 }

@@ -5,7 +5,7 @@ use std::error::Error;
 use tokio;
 use reqwest;
 use reqwest::Response;
-use response_types::{GithubUserResponse, GithubReposResponse};
+use response_types::{GithubUserResponse, GithubReposResponse, GithubCommitResponse};
 
 static USERNAME: &str = "XtdWt";
 
@@ -34,8 +34,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("Found user data for {:#?}", resp_data.get_username());
 
     let repos_url = resp_data.get_repositories_url();
-    let resp = make_github_get_request(&client, repos_url.as_str()).await;
+    let mut resp = make_github_get_request(&client, repos_url.as_str()).await;
     let resp_data: Vec<GithubReposResponse> = resp.json().await?;
-    println!("{:#?}", resp_data);
+    println!("Found repositories data for {:#?}", resp_data.len());
+    for repo_data in resp_data.iter() {
+        let commits_url = String::from("https://api.github.com/repos/XtdWt/") + &repo_data.name + "/commits";
+        resp = make_github_get_request(&client, commits_url.as_str()).await;
+        println!("{:#?}", resp.status());
+        let commit_data: Vec<GithubCommitResponse> = resp.json().await?;
+        println!("Found {:#?} commits data for project: {:#?}", commit_data.len(), &repo_data.name);
+    }
     Ok(())
 }
