@@ -1,0 +1,167 @@
+use serde::Deserialize;
+
+
+#[derive(Deserialize, Debug)]
+pub struct GithubUserResponse {
+    login: String,
+    id: i32,
+    node_id: String,
+    avatar_url: String,
+    gravatar_id: String,
+    url: String,
+    html_url: String,
+    followers_url: String,
+    following_url: String,
+    gists_url: String,
+    starred_url: String,
+    subscriptions_url: String,
+    organizations_url: String,
+    repos_url: String,
+    events_url: String,
+    received_events_url: String,
+    r#type: String,
+    user_view_type: String,
+    site_admin: bool,
+    name: String,
+    company: Option<String>,
+    blog: String,
+    location: Option<String>,
+    email: Option<String>,
+    hire_able: Option<String>,
+    bio: String,
+    twitter_username: Option<String>,
+    public_repos: i32,
+    public_gists: i32,
+    followers: i32,
+    following: i32,
+    created_at: Option<String>,
+    updated_at: Option<String>,
+}
+
+impl GithubUserResponse {
+    pub fn get_username(&self) -> String{
+        self.login.clone()
+    }
+
+    pub fn get_repositories_url(&self) -> String{
+        self.repos_url.clone()
+    }
+}
+
+
+#[derive(Deserialize, Debug)]
+struct GithubOwnerResponse {
+    login: String,
+    id: i64,
+    node_id: String,
+    avatar_url: String,
+    gravatar_id: Option<String>,
+    url: String,
+    html_url: String,
+    followers_url: String,
+    following_url: String,
+    gists_url: String,
+    starred_url: String,
+    subscriptions_url: String,
+    organizations_url: String,
+    repos_url: String,
+    events_url: String,
+    received_events_url: String,
+    r#type: String,
+    user_view_type: String,
+    site_admin: bool,
+}
+
+
+#[derive(Deserialize, Debug)]
+struct GithubLicenseResponse {
+    key: String,
+    name: String,
+    spdx_id: String,
+    url: Option<String>,
+    node_id: String,
+}
+
+
+#[derive(Deserialize, Debug)]
+pub struct GithubReposResponse {
+    id: i64,
+    node_id: String,
+    name: String,
+    full_name: String,
+    private: bool,
+    owner: GithubOwnerResponse,
+    html_url: String,
+    description: Option<String>,
+    fork: bool,
+    url: String,
+    forks_url: String,
+    keys_url: String,
+    collaborators_url: String,
+    teams_url: String,
+    hooks_url: String,
+    issue_events_url: String,
+    events_url: String,
+    assignees_url: String,
+    branches_url: String,
+    tags_url: String,
+    blobs_url: String,
+    git_tags_url: String,
+    git_refs_url: String,
+    trees_url: String,
+    statuses_url: String,
+    languages_url: String,
+    stargazers_url: String,
+    contributors_url: String,
+    subscribers_url: String,
+    subscription_url: String,
+    commits_url: String,
+    git_commits_url: String,
+    comments_url: String,
+    issue_comment_url: String,
+    contents_url: String,
+    compare_url: String,
+    merges_url: String,
+    archive_url: String,
+    downloads_url: String,
+    issues_url: String,
+    pulls_url: String,
+    milestones_url: String,
+    notifications_url: String,
+    labels_url: String,
+    releases_url: String,
+    deployments_url: String,
+    created_at: Option<String>,
+    updated_at: Option<String>,
+    pushed_at: Option<String>,
+    git_url: String,
+    ssh_url: String,
+    clone_url: String,
+    svn_url: String,
+    homepage: Option<String>,
+    size: i32,
+    stargazers_count: i32,
+    watchers_count: i32,
+    language: Option<String>,
+    has_issues: bool,
+    has_projects: bool,
+    has_downloads: bool,
+    has_wiki: bool,
+    has_pages: bool,
+    has_discussions: bool,
+    forks_count: i32,
+    mirror_url: Option<String>,
+    archived: bool,
+    disabled: bool,
+    open_issues_count: i32,
+    license: Option<GithubLicenseResponse>,
+    allow_forking: bool,
+    is_template: bool,
+    web_commit_signoff_required: bool,
+    topics: Vec<String>,
+    visibility: String,
+    forks: i32,
+    open_issues: i32,
+    watchers: i32,
+    default_branch: String
+}
