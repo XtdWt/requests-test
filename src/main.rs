@@ -1,12 +1,13 @@
-mod response_types;
 mod structs;
+mod response_types;
 
 use std::error::Error;
 use tokio;
 use reqwest;
 use reqwest::Response;
-use response_types::{GithubUserResponse, GithubReposResponse, GithubCommitResponse};
+use response_types::{GithubReposResponse, GithubCommitResponse};
 use structs::RepoData;
+
 
 static USERNAME: &str = "XtdWt";
 
@@ -23,19 +24,13 @@ async fn make_github_get_request(client: &reqwest::Client, url: &str) -> Respons
 }
 
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn create_repo_data(user: &str) -> Result<Vec<RepoData>, Box<dyn Error>> {
     let client = reqwest::Client::new();
-
     let base_url = String::from("https://api.github.com");
     let users_url = base_url + "/users/";
-    let request_url = users_url + USERNAME;
-    let resp = make_github_get_request(&client, request_url.as_str()).await;
-    let resp_data: GithubUserResponse = resp.json().await?;
-    println!("Found user data for {:#?}", resp_data.get_username());
+    let request_url = users_url + user + "/repos";
 
-    let repos_url = resp_data.get_repositories_url();
-    let mut resp = make_github_get_request(&client, repos_url.as_str()).await;
+    let mut resp = make_github_get_request(&client, &request_url).await;
     let resp_data: Vec<GithubReposResponse> = resp.json().await?;
     println!("Found repositories data for {:#?}", resp_data.len());
     let mut repo_data_list = Vec::new();
@@ -52,7 +47,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             .unwrap_or_else(|| "YYYY-MM-DD".to_string());
         let updated_at_str = &updated_at_str[0..10];
         let repo_data = RepoData {
-            name: repo_data.full_name.clone(),
+            name: repo_data.name.clone(),
             url: repo_data.url.clone(),
             description: repo_data.description.clone().unwrap_or_else(|| "".to_string()),
             language: repo_data.language.clone().unwrap_or_else(|| "".to_string()),
@@ -61,8 +56,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
             commits: commit_data.len() as i32,
         };
         repo_data_list.push(repo_data);
-    }
+    };
+    Ok(repo_data_list)
+}
 
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let repo_data_list = create_repo_data(USERNAME).await?;
     println!("{:#?}", repo_data_list);
     Ok(())
 }

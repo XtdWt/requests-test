@@ -1,4 +1,7 @@
-#[derive(Debug)]
+use serde::Serialize;
+
+
+#[derive(Debug, Serialize)]
 pub struct RepoData {
     pub name: String,
     pub url: String,

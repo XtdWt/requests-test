@@ -3,54 +3,6 @@ use serde::Deserialize;
 
 
 #[derive(Deserialize, Debug)]
-pub struct GithubUserResponse {
-    login: String,
-    id: i32,
-    node_id: String,
-    avatar_url: String,
-    gravatar_id: String,
-    url: String,
-    html_url: String,
-    followers_url: String,
-    following_url: String,
-    gists_url: String,
-    starred_url: String,
-    subscriptions_url: String,
-    organizations_url: String,
-    repos_url: String,
-    events_url: String,
-    received_events_url: String,
-    r#type: String,
-    user_view_type: String,
-    site_admin: bool,
-    name: String,
-    company: Option<String>,
-    blog: String,
-    location: Option<String>,
-    email: Option<String>,
-    hire_able: Option<String>,
-    bio: String,
-    twitter_username: Option<String>,
-    public_repos: i32,
-    public_gists: i32,
-    followers: i32,
-    following: i32,
-    created_at: Option<String>,
-    updated_at: Option<String>,
-}
-
-impl GithubUserResponse {
-    pub fn get_username(&self) -> String{
-        self.login.clone()
-    }
-
-    pub fn get_repositories_url(&self) -> String{
-        self.repos_url.clone()
-    }
-}
-
-
-#[derive(Deserialize, Debug)]
 struct GithubOwnerResponse {
     login: String,
     id: i64,
@@ -89,7 +41,7 @@ pub struct GithubReposResponse {
     id: i64,
     node_id: String,
     pub name: String,
-    pub full_name: String,
+    full_name: String,
     private: bool,
     owner: GithubOwnerResponse,
     html_url: String,
