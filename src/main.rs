@@ -1,18 +1,17 @@
 mod structs;
 mod response_types;
 
-use std::error::Error;
 use tokio;
 use reqwest;
-use reqwest::Response;
-use response_types::{GithubReposResponse, GithubCommitResponse};
+use std::error::Error;
 use structs::RepoData;
+use response_types::{GithubReposResponse, GithubCommitResponse};
 
 
 static USERNAME: &str = "XtdWt";
 
 
-async fn make_github_get_request(client: &reqwest::Client, url: &str) -> Response {
+async fn make_github_get_request(client: &reqwest::Client, url: &str) -> reqwest::Response {
     let resp = client.get(url)
         .header("Accept", "application/vnd.github.v3+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
