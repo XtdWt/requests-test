@@ -1,11 +1,10 @@
-use chrono::{NaiveDateTime};
-
-
-struct RepoData {
-    name: String,
-    url: String,
-    description: String,
-    language: String,
-    created_date: NaiveDateTime,
-    commits: i32,
+#[derive(Debug)]
+pub struct RepoData {
+    pub name: String,
+    pub url: String,
+    pub description: String,
+    pub language: String,
+    pub created_date: String,
+    pub last_updated: String,
+    pub commits: i32,
 }
